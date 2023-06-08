@@ -1,13 +1,10 @@
-// Charger le module WebAssembly
 const modulePromise = WebAssembly.instantiateStreaming(fetch('ant.wasm'));
 
-// Elements DOM
 const gridElement = document.querySelector('.grid');
 const startButton = document.getElementById('startBtn');
 const stopButton = document.getElementById('stopBtn');
 const resetButton = document.getElementById('resetBtn');
 
-// Variables de la simulation
 let running = false;
 let animationFrameId;
 let imageDataPtr;
@@ -16,9 +13,10 @@ let imageWidth;
 let imageHeight;
 let intervalId;
 
-// Fonction pour démarrer la simulation
-function startSimulation() {
-  if (running) return;
+function start() {
+  if (running) {
+    resetGrid();
+  };
   running = true;
   antModuleInstance.exports.init();
 
@@ -28,29 +26,28 @@ function startSimulation() {
       return;
     }
     
-    stopSimulation();
+    stop();
   }, 10);
 }
 
-// Fonction pour arrêter la simulation
-function stopSimulation() {
+function stop() {
   running = false;
   clearInterval(intervalId);
 }
 
-// Fonction pour réinitialiser la grille
 function resetGrid() {
-  stopSimulation();
+  stop();
   antModuleInstance.exports.init();
   updateGrid();
 }
 
-// Fonction pour mettre à jour la grille à partir des données de l'image
+// Fonction pour mettre à jour la grille.
 function updateGrid() {
   const data = new Uint8Array(antModuleInstance.exports.get_image_size());
   const dataPtr = antModuleInstance.exports.get_image_address();
   data.set(new Uint8Array(antModuleInstance.exports.memory.buffer, dataPtr, data.length));
 
+  // Ajoute une cell noire ou la retire (et donc devient blanche).
   for (let y = 0; y < imageHeight; y++) {
     for (let x = 0; x < imageWidth; x++) {
       const index = (y * imageWidth + x) * 4;
@@ -64,11 +61,10 @@ function updateGrid() {
   }
 }
 
-// Attacher les gestionnaires d'événements aux boutons
-startButton.addEventListener('click', startSimulation);
-stopButton.addEventListener('click', stopSimulation);
+startButton.addEventListener('click', start);
+stopButton.addEventListener('click', stop);
 
-// Charger et initialiser le module WebAssembly
+// Charger et initialiser WebAssembly
 let antModuleInstance;
 modulePromise.then(module => {
   antModuleInstance = module.instance;
@@ -77,7 +73,7 @@ modulePromise.then(module => {
   imageWidth = antModuleInstance.exports.get_image_width();
   imageHeight = antModuleInstance.exports.get_image_height();
 
-  // Créer les cellules de la grille
+  // Création des cellules de la grille.
   for (let y = 0; y < imageHeight; y++) {
     for (let x = 0; x < imageWidth; x++) {
       const cell = document.createElement('div');
@@ -85,7 +81,6 @@ modulePromise.then(module => {
       gridElement.appendChild(cell);
     }
   }
-
-  // Initialiser la grille
+  
   resetGrid();
 });
