@@ -32,9 +32,9 @@ int get_image_size(void) {
 }
 
 WASM_EXPORT
-// Génère un cadriage dans IMAGE
+// Génère un cadre dans IMAGE
 void init(void) {
-    for (int y = 0; y < HEIGHT; y++) {
+  for (int y = 0; y < HEIGHT; y++) {
     for (int x = 0; x < WIDTH; x++) {
       IMAGE[y][x][R] = 255;
       IMAGE[y][x][G] = 255;
@@ -45,47 +45,41 @@ void init(void) {
 }
 
 WASM_EXPORT
-// Setp d'une fourmi de Langton
+// Etape d'une fourmi de Langton
 void move(void) {
   int cellR = IMAGE[antY][antX][R];
   int cellG = IMAGE[antY][antX][G];
   int cellB = IMAGE[antY][antX][B];
   int cellA = IMAGE[antY][antX][A];
 
-  // Change the color of the current cell
+  // Change la couleur de la cellule actuelle
   IMAGE[antY][antX][R] = 0;
   IMAGE[antY][antX][G] = 0;
   IMAGE[antY][antX][B] = 0;
   IMAGE[antY][antX][A] = 255;
 
-  // Update the ant's position and orientation based on the color of the current cell
+  // Met à jour la position et l'orientation de la fourmi en fonction de la couleur de la cellule actuelle
   if (cellR == 0 && cellG == 0 && cellB == 0) {
-    // Cell is black, turn right
+    // La cellule est noire, tourne à droite
     antOrientation = (antOrientation + 1) % 4;
   } else {
-    // Cell is white, turn left
+    // La cellule est blanche, tourne à gauche
     antOrientation = (antOrientation + 3) % 4;
   }
 
-  // Move the ant forward
+  // Déplace la fourmi vers l'avant
   switch (antOrientation) {
-    case 0:  // Up
+    case 0:  // Haut
       antY = (antY - 1 + HEIGHT) % HEIGHT;
       break;
-    case 1:  // Right
+    case 1:  // Droite
       antX = (antX + 1) % WIDTH;
       break;
-    case 2:  // Down
+    case 2:  // Bas
       antY = (antY + 1) % HEIGHT;
       break;
-    case 3:  // Left
+    case 3:  // Gauche
       antX = (antX - 1 + WIDTH) % WIDTH;
       break;
   }
 }
-
-
-
-
-
-
