@@ -53,21 +53,25 @@ void move(void) {
   int cellA = IMAGE[antY][antX][A];
 
   // Change la couleur de la cellule actuelle
-  IMAGE[antY][antX][R] = 0;
-  IMAGE[antY][antX][G] = 0;
-  IMAGE[antY][antX][B] = 0;
-  IMAGE[antY][antX][A] = 255;
-
-  // Met à jour la position et l'orientation de la fourmi en fonction de la couleur de la cellule actuelle
   if (cellR == 0 && cellG == 0 && cellB == 0) {
-    // La cellule est noire, tourne à droite
-    antOrientation = (antOrientation + 1) % 4;
-  } else {
-    // La cellule est blanche, tourne à gauche
+    // La cellule est noire, tourne à gauche
     antOrientation = (antOrientation + 3) % 4;
+    // Change la couleur de la cellule en blanc
+    IMAGE[antY][antX][R] = 255;
+    IMAGE[antY][antX][G] = 255;
+    IMAGE[antY][antX][B] = 255;
+    IMAGE[antY][antX][A] = 255;
+  } else {
+    // La cellule est blanche, tourne à droite
+    antOrientation = (antOrientation + 1) % 4;
+    // Change la couleur de la cellule en noir
+    IMAGE[antY][antX][R] = 0;
+    IMAGE[antY][antX][G] = 0;
+    IMAGE[antY][antX][B] = 0;
+    IMAGE[antY][antX][A] = 255;
   }
 
-  // Déplace la fourmi vers l'avant
+  // Met à jour la position de la fourmi en fonction de son orientation
   switch (antOrientation) {
     case 0:  // Haut
       antY = (antY - 1 + HEIGHT) % HEIGHT;
