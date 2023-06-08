@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #define WASM_EXPORT __attribute__((visibility("default")))
 
 #define WIDTH 128
@@ -32,10 +34,10 @@ int get_image_size(void) {
 }
 
 WASM_EXPORT
-// Génère un cadre dans IMAGE
+// Génère une grid blanche
 void init(void) {
-  for (int y = 0; y < HEIGHT; y++) {
-    for (int x = 0; x < WIDTH; x++) {
+  for (int y = 0; y <= HEIGHT; y++) {
+    for (int x = 0; x <= WIDTH; x++) {
       IMAGE[y][x][R] = 255;
       IMAGE[y][x][G] = 255;
       IMAGE[y][x][B] = 255;
@@ -46,7 +48,12 @@ void init(void) {
 
 WASM_EXPORT
 // Etape d'une fourmi de Langton
-void move(void) {
+bool move(void) {
+  // Vérifie si la fourmi a atteint les bords de la grille
+  if (antX == 0 || antX == WIDTH || antY == 0 || antY == HEIGHT) {
+    return false;
+  }
+
   int cellR = IMAGE[antY][antX][R];
   int cellG = IMAGE[antY][antX][G];
   int cellB = IMAGE[antY][antX][B];
@@ -86,4 +93,6 @@ void move(void) {
       antX = (antX - 1 + WIDTH) % WIDTH;
       break;
   }
+
+  return true;
 }

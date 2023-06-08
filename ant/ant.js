@@ -23,9 +23,13 @@ function startSimulation() {
   antModuleInstance.exports.init();
 
   intervalId = setInterval(() => {
-    antModuleInstance.exports.move();
-    updateGrid();
-  }, 1000);
+    if (antModuleInstance.exports.move()) {
+      updateGrid();
+      return;
+    }
+    
+    stopSimulation();
+  }, 10);
 }
 
 // Fonction pour arrêter la simulation
@@ -63,7 +67,6 @@ function updateGrid() {
 // Attacher les gestionnaires d'événements aux boutons
 startButton.addEventListener('click', startSimulation);
 stopButton.addEventListener('click', stopSimulation);
-resetButton.addEventListener('click', resetGrid);
 
 // Charger et initialiser le module WebAssembly
 let antModuleInstance;

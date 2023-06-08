@@ -10,7 +10,5 @@ RUN apt-get install python3 clang lld build-essential -y
 # Set the working directory
 WORKDIR /data
 
-RUN chmod +x /data
-
 # Command to keep the container running
 CMD ["/bin/bash"]
