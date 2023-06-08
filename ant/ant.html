@@ -1,15 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>WASM Ant</title>
+  <title>TP : Fourmi de Langton</title>
+  <style>
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(128, 1fr);
+      grid-template-rows: repeat(128, 1fr);
+      gap: 1px;
+    }
+
+    .cell {
+      width: 10px;
+      height: 10px;
+      background-color: white;
+    }
+
+    .cell.black {
+      background-color: black;
+    }
+  </style>
+  <script type="text/javascript" src="ant.js" defer></script>
 </head>
 <body>
-  <canvas style="border: thin solid red" id="canvas"></canvas>
-<button  id="start">Start</button>
-  <button id="stop">Stop</button>
-  <button id="reset">Reset</button>
-  <span id="container"></span>
-  <script src="./ant.js" defer></script>
+  <div class="grid"></div>
+  <button id="startBtn">Start</button>
+  <button id="stopBtn">Stop</button>
 </body>
 </html>

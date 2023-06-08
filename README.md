@@ -1,15 +1,37 @@
-# Web Assembly par l'exemple
+# Web Assembly : coder la fourmi de Langton.
 
-Ce dépôt contient quelques exemples d'initiation à Web Assembly,
-ainsi qu'un `Makefile` permettant de compiler et tester le résultat:
+### Start
 
-* `make` va compiler les fichiers C en Web Assembly dans les différents exemples
-* `make serve` va lancer un serveur Web local permettant de les tester
-  (en ouvrant le fichier HTML dans chacun des répertoires d'exemple)
+Prérequis : python3 clang lld
+Si vous êtes dans l'incapacité d'installer ces dépendances, vous pouvez utiliser le dockerfile fourni.
 
-## Pré-requis
+```bash
+docker build -t tp/webassembly . 
+docker run -v $HOME/Desktop/webassemblyTest:/data --interactive --tty -d -p 8080:8080 --name tp_webassembly tp/webassembly
+docker exec -it tp_webassembly bash
+```
 
-Le `Makefile` suppose que les outils `clang`, `lld` et `python3` sont disponibles:
+### Build
 
-* sous Ubuntu: `apt install clang lld python3`
+Utiliser le Makefile pour compiler et lancer le projet.
 
+```bash
+make restart # pour compiler et lancer le projet (clean + build + run)
+```
+
+### Description
+
+Le projet est composé de 3 fichiers principaux :
+- ant.c : contient le code de la fourmi de Langton
+- ant.js : contient le code javascript qui permet de faire le lien entre le code C et le code HTML
+- ant.html : contient le code HTML qui permet d'afficher la fourmi de Langton dans un canvas.
+
+### Utilisation
+
+Une fois le projet lancé, vous pouvez accéder à l'interface web à l'adresse suivante : http://0.0.0.0:8080/ant.html
+
+Un bouton stop et start sont à votre disposition pour lancer ou arrêter la simulation, ou même la relancer (réappuyer sur start).
+
+### Crédits
+
+Lien vers la page de TP : https://perso.liris.cnrs.fr/pierre-antoine.champin/2023/wasm/
